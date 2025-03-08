@@ -1,6 +1,7 @@
 package com.itrosys.cycle_engine.controller;
 
 import com.itrosys.cycle_engine.dto.BrandResponse;
+import com.itrosys.cycle_engine.dto.BrandUpdateRequest;
 import com.itrosys.cycle_engine.service.BrandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -40,30 +41,27 @@ public class BrandController {
         return new ResponseEntity<>(brandService.getBrandByName(name), HttpStatus.OK);
     }
 
-    @Operation(summary = "Add a new brand", description = "Creates a new brand",
-            security = @SecurityRequirement(name = "basicAuth"))
+    @Operation(summary = "Add a new brand", description = "Creates a new brand", security = @SecurityRequirement(name = "basicAuth"))
     @PostMapping("/add")
     public ResponseEntity<BrandResponse> addBrand(@RequestParam String name) {
         return new ResponseEntity<>(brandService.addBrand(name), HttpStatus.ACCEPTED);
     }
 
     @Operation(summary = "Update brand name", description = "Updates the brand name by its ID",
-            security = @SecurityRequirement(name = "basicAuth"))
+    security = @SecurityRequirement(name = "basicAuth"))
     @PatchMapping("/update")
-    public ResponseEntity<BrandResponse> updateBrandName(@RequestParam int id, @RequestParam String newBrandName) {
-        return ResponseEntity.ok(brandService.updateBrandName(id, newBrandName));
+    public ResponseEntity<BrandResponse> updateBrandName(@RequestBody BrandUpdateRequest request) {
+        return ResponseEntity.ok(brandService.updateBrandName(request.getId(), request.getNewBrandName()));
     }
 
-    @Operation(summary = "Make brand Active", description = "Active the brand name by its ID",
-            security = @SecurityRequirement(name = "basicAuth"))
+    @Operation(summary = "Make brand Active", description = "Active the brand name by its ID", security = @SecurityRequirement(name = "basicAuth"))
     @PatchMapping("/make-active/{id}")
     public ResponseEntity<BrandResponse> makeBrandActive(@PathVariable int id) {
-        return new ResponseEntity<>(brandService.makeBrandActive(id),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(brandService.makeBrandActive(id), HttpStatus.ACCEPTED);
 
     }
 
-    @Operation(summary = "Delete brand by ID", description = "Removes a brand using its ID",
-            security = @SecurityRequirement(name = "basicAuth"))
+    @Operation(summary = "Delete brand by ID", description = "Removes a brand using its ID", security = @SecurityRequirement(name = "basicAuth"))
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<BrandResponse> deleteBrandById(@PathVariable int id) {
         return new ResponseEntity<>(brandService.deleteBrandById(id), HttpStatus.ACCEPTED);
