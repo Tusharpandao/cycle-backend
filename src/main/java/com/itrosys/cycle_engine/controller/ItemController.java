@@ -43,16 +43,14 @@ public class ItemController {
         return ResponseEntity.ok(itemService.getItemsByType(type,brandId));
     }
 
-    @Operation(summary = "Add a New Item", description = "Create a new item in the system",
-            security = @SecurityRequirement(name = "basicAuth"))
+    @Operation(summary = "Add a New Item", description = "Create a new item in the system")
     @PostMapping("/add")
     public ResponseEntity<ItemResponse> addItem(@RequestBody ItemRequest itemRequest) {
         return new ResponseEntity<>(itemService.addItem(itemRequest), HttpStatus.CREATED);
     }
 
 
-    @Operation(summary = "Update Item Price", description = "Update the price of an item by its ID",
-            security = @SecurityRequirement(name = "basicAuth"))
+    @Operation(summary = "Update Item Price", description = "Update the price of an item by its ID")
     @PatchMapping("/update/price")
     public ResponseEntity<ItemResponse> updateItemPrice(@RequestParam int itemId, @RequestParam BigDecimal price) {
         return new ResponseEntity<>(itemService.updateItemPrice(itemId, price), HttpStatus.ACCEPTED);

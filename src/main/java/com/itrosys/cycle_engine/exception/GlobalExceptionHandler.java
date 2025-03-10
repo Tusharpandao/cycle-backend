@@ -1,13 +1,28 @@
 package com.itrosys.cycle_engine.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<String> handleExpireToken(ExpiredJwtException ex){
+        return new ResponseEntity<>("Token Expire Login Again", HttpStatus.NOT_ACCEPTABLE);
+    }
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFound(UsernameNotFoundException ex){
+        return new ResponseEntity<>("You not register please Register first..",HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(BadCredentials.class)
+    public ResponseEntity<String> handleBadCredential(BadCredentials ex){
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(BrandNotFound.class)
     public ResponseEntity<String> handleBrandNotFoundException(BrandNotFound ex) {
